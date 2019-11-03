@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Tugas Besar 2 P3B</string>
+    <string name="app_name">Space Shooter</string>
+    <string name="title_activity_main_menu">MainMenuActivity</string>
 </resources>

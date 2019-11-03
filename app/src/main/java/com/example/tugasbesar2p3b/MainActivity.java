@@ -1,101 +1,83 @@
 package com.example.tugasbesar2p3b;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
+import android.content.Context;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PointF;
+import android.graphics.Point;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
 import android.os.Bundle;
-import android.view.GestureDetector;
+import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.view.WindowManager;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
+import androidx.appcompat.app.AppCompatActivity;
 
-    protected Canvas mCanvas;
-    protected ImageView ivCanvas;
-    private GestureDetector mDetector;
+public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
-    protected Paint paint;
-    private boolean canvasInitiated;
-    private Bitmap mBitmap;
-    private int hitam,bg;
-    protected MyCustomGestureListener listener;
+    protected GameView mGameView;
+    private float mXTemp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        this.ivCanvas= (ImageView) findViewById(R.id.iv_canvas);
+        //Membuat tampilan menjadi full screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        this.ivCanvas.setOnTouchListener(this);
+        //Membuat tampilan selalu menyala jika activity aktif
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        this.listener= new MyCustomGestureListener(this);
-        this.mDetector=new GestureDetector(this,this.listener);
+        //Mendapatkan ukuran layar
+        Display display = getWindowManager().getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        Log.d("X and Y size", "X = " + point.x + ", Y = " + point.y);
 
-        this.hitam=ResourcesCompat.getColor(getResources(),R.color.colorHitam,null);
+        mGameView = new GameView(this, point.x, point.y);
+        setContentView(mGameView);
 
 
 
-        this.canvasInitiated=false;
-
-    }
-
-    public void initiateCanvas()
-    {
-        this.mBitmap=Bitmap.createBitmap(this.ivCanvas.getWidth(),this.ivCanvas.getHeight(),Bitmap.Config.ARGB_8888);
-        this.ivCanvas.setImageBitmap(mBitmap);
-        this.mCanvas=new Canvas(mBitmap);
-
-        this.paint = new Paint();
-        this.paint.setStrokeWidth(3);
-        this.changeStrokeColor(this.hitam);
-        this.paint.setStyle(Paint.Style.STROKE);
-        this.resetCanvas();
-
-    }
-    public void drawTriangle(Canvas canvas, Paint paint, float x, float y, int width) {
-        int halfWidth = width / 2;
-
-        Path path = new Path();
-        path.moveTo(x, y - halfWidth); // Top
-        path.lineTo(x - halfWidth, y + halfWidth); // Bottom left
-        path.lineTo(x + halfWidth, y + halfWidth); // Bottom right
-        path.lineTo(x, y - halfWidth); // Back to Top
-        path.close();
-
-        canvas.drawPath(path, paint);
-    }
-    public void resetCanvas()
-    {
-        this.mCanvas.drawColor(this.bg);
-        this.ivCanvas.invalidate();
-        this.changeStrokeColor(hitam);
-        this.paint.setStrokeWidth(3);
-
-    }
-
-    private void changeStrokeColor(int color) {
-        //change stroke color using parameter (color resource id)
-        this.paint.setColor(color);
-
+        //Sensor Accelerometer digunakan untuk menggerakan player ke kanan dan ke kiri
+        SensorManager manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor accelerometer = manager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+        manager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
-    public void onClick(View view) {
-
+    protected void onResume() {
+        super.onResume();
+        mGameView.resume();
     }
 
     @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        this.canvasInitiated = true;
-        this.initiateCanvas();
-        this.resetCanvas();
-        return this.mDetector.onTouchEvent(motionEvent);
+    protected void onPause() {
+        super.onPause();
+        mGameView.pause();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        mXTemp = event.values[0];
+
+        if (event.values[0] > 1){
+            mGameView.steerLeft(event.values[0]);
+        }
+        else if (event.values[0] < -1){
+            mGameView.steerRight(event.values[0]);
+        }else{
+            mGameView.stay();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+
 }

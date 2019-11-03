@@ -3,12 +3,6 @@ package com.example.tugasbesar2p3b;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created on   : 8/12/2017
- * Developed by : Hendrawan Adi Wijaya
- * Github       : https://github.com/andevindo
- * Website      : http://www.andevindo.com
- */
 
 public class SharedPreferencesManager {
 

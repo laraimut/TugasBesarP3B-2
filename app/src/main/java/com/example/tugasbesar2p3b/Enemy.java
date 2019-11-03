@@ -9,12 +9,6 @@ import java.util.Random;
 
 
 
-/**
- * Created on   : 8/12/2017
- * Developed by : Hendrawan Adi Wijaya
- * Github       : https://github.com/andevindo
- * Website      : http://www.andevindo.com
- */
 
 public class Enemy {
 

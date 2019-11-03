@@ -15,12 +15,6 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created on   : 8/11/2017
- * Developed by : Hendrawan Adi Wijaya
- * Github       : https://github.com/andevindo
- * Website      : http://www.andevindo.com
- */
 
 public class GameView extends SurfaceView implements Runnable {
 

@@ -220,10 +220,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     void drawGameOver() {
         Paint gameOver = new Paint();
+        Paint button = new Paint();
+
         gameOver.setTextSize(100);
         gameOver.setTextAlign(Paint.Align.CENTER);
         gameOver.setColor(Color.WHITE);
-        mCanvas.drawText("GAME OVER", mScreenSizeX / 2, mScreenSizeY / 2, gameOver);
+        mCanvas.drawText("You Lose!", mScreenSizeX / 2, mScreenSizeY / 2, gameOver);
         Paint highScore = new Paint();
         highScore.setTextSize(50);
         highScore.setTextAlign(Paint.Align.CENTER);

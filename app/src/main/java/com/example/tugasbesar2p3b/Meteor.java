@@ -27,8 +27,8 @@ public class Meteor {
     private int mScreenSizeY;
     private int mHP;
     private SoundPlayer mSoundPlayer;
-    private int SCORE=0;
-    private int METEOR_DESTROYED=0;
+    private int SCORE=10;
+    private int METEOR_DESTROYED=10;
 
     public Meteor(Context context, int screenSizeX, int screenSizeY, SoundPlayer soundPlayer){
         mScreenSizeX = screenSizeX;
@@ -42,7 +42,7 @@ public class Meteor {
         mMaxY = screenSizeY - mBitmap.getHeight();
         mMinX = 0;
         mMinY = 0;
-        mHP = 3;
+        mHP = 1;
 
         Random random = new Random();
         mSpeed = random.nextInt(3) + 1;
@@ -69,7 +69,7 @@ public class Meteor {
     public void hit(){
         if (--mHP ==0){
             SCORE += 20;
-            METEOR_DESTROYED++;
+            this.METEOR_DESTROYED++;
             destroy();
         }else{
             mSoundPlayer.playExplode();

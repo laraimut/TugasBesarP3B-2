@@ -74,8 +74,8 @@ public class GameView extends SurfaceView implements Runnable {
                 draw();
                 control();
             }
+
         }
-        Log.d("GameThread", "Run stopped");
     }
 
     public void update() {
@@ -90,14 +90,17 @@ public class GameView extends SurfaceView implements Runnable {
             if (Rect.intersects(m.getCollision(), mPlayer.getCollision())) {
                 m.destroy();
                 mIsGameOver = true;
-                if (SCORE>mSP.getHighScore()){
+                if (SCORE>mSP.getHighScore() || METEOR_DESTROYED> mSP.getMeteorDestroyed() ){
                     mNewHighScore = true;
                     mSP.saveHighScore(SCORE, METEOR_DESTROYED, ENEMY_DESTROYED);
                 }
+
             }
 
             for (Laser l : mPlayer.getLasers()) {
                 if (Rect.intersects(m.getCollision(), l.getCollision())) {
+                    SCORE+=100;
+                    METEOR_DESTROYED++;
                     m.hit();
                     l.destroy();
                 }
@@ -125,13 +128,15 @@ public class GameView extends SurfaceView implements Runnable {
             if (Rect.intersects(e.getCollision(), mPlayer.getCollision())) {
                 e.destroy();
                 mIsGameOver = true;
-                if (SCORE>=mSP.getHighScore()){
+                if (SCORE>=mSP.getHighScore() || SCORE > mSP.getEnemyDestroyed() ){
                     mSP.saveHighScore(SCORE, METEOR_DESTROYED, ENEMY_DESTROYED);
                 }
             }
 
             for (Laser l : mPlayer.getLasers()) {
                 if (Rect.intersects(e.getCollision(), l.getCollision())) {
+                    SCORE+=100;
+                    ENEMY_DESTROYED++;
                     e.hit();
                     l.destroy();
                 }

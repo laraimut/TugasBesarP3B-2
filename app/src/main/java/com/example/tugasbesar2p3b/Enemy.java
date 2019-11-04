@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -33,7 +34,7 @@ public class Enemy {
         mScreenSizeY = screenSizeY;
         mSoundPlayer = soundPlayer;
 
-        mHP = 5;
+        mHP = 1;
 
         mEnemies = new int[]{R.drawable.lawan, R.drawable.lawan_2, R.drawable.lawan_3};
         Random random = new Random();
@@ -85,7 +86,7 @@ public class Enemy {
     public void hit(){
         if (--mHP ==0){
             SCORE += 50;
-            ENEMY_DESTROYED++;
+            this.ENEMY_DESTROYED++;
             destroy();
         }else{
             mSoundPlayer.playExplode();

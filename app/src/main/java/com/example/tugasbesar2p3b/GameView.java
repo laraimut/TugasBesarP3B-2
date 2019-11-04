@@ -11,12 +11,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class GameView extends SurfaceView implements Runnable {
+public class GameView extends SurfaceView implements Runnable  {
 
     private Thread mGameThread;
     private volatile boolean mIsPlaying;
@@ -48,6 +49,7 @@ public class GameView extends SurfaceView implements Runnable {
         mSoundPlayer = new SoundPlayer(context);
         mPaint = new Paint();
         mSurfaceHolder = getHolder();
+
 
         reset();
     }
@@ -188,7 +190,7 @@ public class GameView extends SurfaceView implements Runnable {
     public void draw() {
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
-            mCanvas.drawColor(Color.BLACK);
+            mCanvas.drawColor(Color.WHITE);
             mCanvas.drawBitmap(mPlayer.getBitmap(), mPlayer.getX(), mPlayer.getY(), mPaint);
             for (Star s : mStars) {
                 mCanvas.drawBitmap(s.getBitmap(), s.getX(), s.getY(), mPaint);
@@ -289,14 +291,19 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+//                Log.d("test", x +" " + y);
                 if (mIsGameOver){
                     ((Activity) getContext()).finish();
                     getContext().startActivity(new Intent(getContext(), MainMenuActivity.class));
                 }
                 break;
+
         }
         return super.onTouchEvent(event);
     }
+
 }

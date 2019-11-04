@@ -17,7 +17,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener{
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     protected GameView mGameView;
     private float mXTemp;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Display display = getWindowManager().getDefaultDisplay();
         Point point = new Point();
         display.getSize(point);
-        Log.d("X and Y size", "X = " + point.x + ", Y = " + point.y);
+
 
         mGameView = new GameView(this, point.x, point.y);
         setContentView(mGameView);
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         mXTemp = event.values[0];
-
         if (event.values[0] > 1){
             mGameView.steerLeft(event.values[0]);
         }
@@ -75,9 +74,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+
+                if(x <= 500){
+                    mGameView.steerLeft(5);
+
+//                    Log.d("kiri", "kiri");
+                }
+                else{
+                    mGameView.steerRight(5);
+//                    Log.d("kanan", "kanan");
+                }
+                break;
+        }
+        return true;
 
     }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
 }

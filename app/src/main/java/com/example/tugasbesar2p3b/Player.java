@@ -8,12 +8,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-/**
- * Created on   : 8/11/2017
- * Developed by : Hendrawan Adi Wijaya
- * Github       : https://github.com/andevindo
- * Website      : http://www.andevindo.com
- */
+
 
 public class Player {
 

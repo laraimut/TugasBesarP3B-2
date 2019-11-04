@@ -41,7 +41,7 @@ public class Player {
         mContext = context;
 
         mSpeed = 1;
-        mBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_1_blue);
+        mBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.kita);
         mBitmap = Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth() * 3/5, mBitmap.getHeight() * 3/5, false);
 
         mMaxX = screenSizeX - mBitmap.getWidth();
